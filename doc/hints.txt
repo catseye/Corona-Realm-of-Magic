@@ -1,0 +1,9 @@
+General questions?  Type '?' for help.
+
+Darkness got you down?  Try wielding a light source in either of your
+hands.  Type 'w', select either 'L.Hand' or 'R.Hand', then select a
+light source.  If you put the light source in your right hand, you
+might be able to swing it at your opponent while in battle.
+
+Accidentally typed something while the screen was redrawing, and it
+looks all wrong now?  Type 'control-l' to refresh the display.

@@ -1,0 +1,505 @@
+<html>
+<head>
+<title>Corona: Realm of Magic v2000.12.04 Documentation</title>
+<body bgcolor=#ffe0c0 text-#000000>
+
+<h1>Corona</h1>
+<h3>Realm of Magic</h3>
+<hr>
+<br>(c)2000 Cat's Eye Technologies.  All rights reserved.
+<br>This software is OSI Certified Open Source Software.
+<br>See the file <a href="license.txt">license.txt</a> for license information.
+<p>
+
+<h2>Documentation</h2>
+
+<h3>Introduction</h3>
+
+<p><b>Corona: Realm of Magic</b> is a rogue-like computer
+role-playing game.
+
+<p>It serves as a platform on which the author can air his
+opinions about rogue-like games.
+
+<p>Many games throughout history have inspired and otherwise
+fed into <b>Corona</b>:	the "old-school" games like Wumpus,
+Colossal Cave[/Adventure], and Dungeon[/Zork]; the classic
+roguelikes like Rogue itself, [Net]Hack, Moria[/Angband], as
+well as more recent roguelikes like AlphaMan, ZZT[/Megazeux]
+and ADOM; commercial CRPG's have some influence on it as
+well, from earlier game series like Ultima, Bard's Tale, and
+Pool of Radiance, to more recent ones like Final Fantasy,
+Dungeon Master [Amiga], and Diablo.
+
+<p>Corona is built on the <a href="../../doc/index.html">CARPE DIEM</a> game engine.
+(In fact CARPE DIEM evolved out of the original Corona.)
+
+<h3>Game Overview</h3>
+
+<p>You command a band (or bands) of adventurers who set out to find
+fame, fortune, riches, experience, and excitement in a relatively
+open-ended fashion.
+
+<h3>The World</h3>
+
+<p><b>Corona: Realm of Magoc</b> is set in a large fantasy universe, primarily on a newly-
+colonized and largely-unexplored continent where magic forces
+abound and various groups vy for power.
+
+<p>Civilization has barely yet gotten a foothold on this world that
+the explorers call Aelia, the new world, and the residents call
+Q'lob Stehlm, their ancestral homeland.
+
+<p>The larger settlements, like Bakersport and Saiphan, have become
+walled cities, keeping the noblemen and women safe from the
+rampaging hordes of grotesques and spririts, but leaving the
+farmers and peasants in the surrounding countryside without support;
+only their savvy and pioneer spirit remain to help protect them.
+
+<p>Meanwhile the nomadic native creatures are adapting to this
+intrusion, forming camps and strongholds of their own, as their
+far-superior knowledge of the countryside allows them to conceal
+their machinations extremely effectively.
+
+<p><hr>
+
+<h3>Ability Stats</h3>
+
+<p>All creatures, monsters and characters alike, have important
+attributes which are generated randomly upon their creation.
+These attributes are called <i>ability stats</i> and are chosen
+for human beings as the sum of three six-sided dice rolls (rolls
+for other beings are usually based on this as well, with certain
+tradeoffs.)
+
+<p>Each creature has a maximum value for each stat, as well as
+an operating value.  An operating value lower than a maximum
+value indicates that the creature has sustained some manner of
+injury, be it physical, mental, or spiritual.  When allowed to
+rest, operating stats will tend to heal back towards (but not
+beyond) the maximum stat.  Operating stats can also be boosted
+above the maximum stat temporarily; they will fall back to the
+maximum stat in time.
+
+<p>The stats are:
+
+<ul>
+<p><li>STRENGTH.  A measure of the raw muscular strength of the
+creature.  Extreme pain and weakening agents such as poisons
+subtract from operating strength.  An operating strength of
+zero indicates a creature is too weak to move.  A negative
+operating strength will kill a creature by means of
+complete muscular atrophy.
+
+<p><li>CONSTITUTION.  A measure of the physical makeup and
+endurance of the creature.  Physical damage subtracts from
+operating constitution.  An operating constitution of
+zero indicates a creature is too wounded to move.  A negative
+operating constitution will kill a creature by means of fatal
+wounding.
+
+<p><li>DEXTERITY.  A measure of the agility and overall
+swiftness of the creature.  Constriction and cold attacks
+subtract from operating dexterity.  An operating dexterity of
+zero indicates a creature is too constricted or frozen
+to move.  A negative operating dexterity will kill a
+creature by means of strangulation or crushing.
+
+<p><li>INTELLIGENCE.  A measure of the overall reasoning
+capabilities of the creature.  Psychic attacks and critical
+head hits subtract from operating intelligence.  An
+operating intelligence of zero indicates a creature is too
+senseless or brain-damaged to move.  A negative operating
+intelligence will kill a creature by means of brain death.
+
+<p><li>SPIRIT.  A measure of the overall spiritual
+balance of the creature, also related to the awareness,
+alacrity, and ego of the creature in general.  Casting
+commonplace magical spells subtract from operating spirit.  An
+operating spirit of zero indicates a creature is too
+exhausted or depressed to move.  A negative operating
+spirit may subtract from the creature's maximum constitution.
+
+<p><li>CHARISMA.  A measure of the likeableness and natural
+ease with the creature interacts with others, also related to
+the cunning of the creature.  Peer/community pressure, disfiguring
+(acid) attacks, and acquiring unpleasant scents subtract from operating charisma.  An
+operating charisma of zero indicates a creature is too bitter and
+twisted to do anything except inspire fear and loathing on sight.
+A negative operating charisma cannot be achieved.
+
+</ul>
+
+<h3>Combat System</h3>
+
+<h4>Melee Weapons</h4>
+
+<p>A character may only engage in melee with a weapon in their dominant
+hand unless they have a talent at two-handed combat.  Ambidextrous
+characters may change what their dominant hand is at any time by
+switching stance.  Without a weapon readied in the dominant hand, a
+creature will use its body weaponry (which in the case of humanoids
+consists by default of a single punch.)
+
+<p>A weapon has one or more attacks.  For each attack several values
+are associated: the accuracy of the attack (bonus modifier added to
+the to-hit roll,) the potental damage (as dice with a bonus modifier,)
+and the makeup of the damaging blow in terms of elements, for
+determining scaled damage based on resistance.
+
+<p>In addition, the item itself is made of up elements.  These elements
+determine (upon object creation) various properties of the weapon
+itself.  These properties include color, density (scale of weight),
+and hardness (implemented as resistances on the item itself.)
+
+<p>A reflexive talent of weapon proficiency may be acquired and improved
+for each class of weapon (sword, quarterstaff, and so forth.)  A
+successful use of this talent effectively gives the character a second
+to-hit roll.
+
+<h4>Armour</h4>
+
+<p>Armour, which includes clothing, are items which can be wielded on
+places other the hands.
+
+<p>Each piece of armour has a coverage value, which is the percent of
+the region it is worn on that it protects.
+It also has a condition value which describes how damaged it is.
+
+<p>In addition, the item itself is made of up elements.  These elements
+determine (upon object creation) various properties of the armour
+itself.  These properties include color, density (scale of weight),
+and hardness (implemented as resistances on the item itself.)
+
+<p>Initial condition (durability) is derived from weight (base weight
+times density.)  Each strike of weapon on armour damages both the
+weapon and the armour.  Each is subject to resistance from the other
+based on the elements in play.
+
+<p>A reflexive talent of armour use may be acquired and improved.
+for each class of weapon (sword, quarterstaff, and so forth.)  A
+successful use of this talent effectively lets the roll on
+coverage to be taken again.
+
+<h3>Guilds</h3>
+
+<p>The residents of Aelia are no strangers to the idea of the division
+of labour.  Many organizations, both religious and secular in nature,
+attract many adventurers who rise up their ranks in their pursuit of
+fame, power, and riches.  These guilds provide training and standing
+for their members, for a fee.
+
+<p>Training involves both physical and personal development, as well
+as acquiring and improving talents.
+
+<p>With respect to personal training, each guild is associated with
+an ability stat called the prime desired stat.  Some guilds also
+have another ability stat called the secondary desired stat.
+As a character climbs the ranks of a guild, at a rate determined
+by the guild, they are offered the opportunity to permanently
+enhance these ability stats.
+
+<p>With respect to learning talents, each guild protects a set of
+skills which it grants to its members as they rise in rank.
+While the use of these talents is not restricted to guild members,
+some are protected by the guild, such that the costs or chances of
+non-members acquiring them are prohibitive.  Each talent is only
+available at a certain guild rank and above.  Once acquired, the
+talent may also be improved in lieu of learning a new talent (if one
+is available.)
+
+<h4>The Basic Six Adventurer Guilds</h4>
+
+<ul>
+<p><li>
+SOLDIER.  Warriors who are used to looking at the world from behind
+the haft of a drawn blade.  It's not a pleasant or easy job but there's
+rarely a problem finding work.
+
+<p>The prime desired stat of the soldier is strength.  Soldier talents
+include combat theory, assorted physical conditioning skills,
+weapon and armour familiarity, assorted combat manouevers, and some
+defense and survival techniques.
+
+<p><li>RANGER.  Patrolmen who are relied upon to scout and explore the
+wilderness, often on horseback.  Esteemed for upholding the "tough
+cookie" image through thick and thin.
+
+<p>The prime desired stat of the ranger is constitution.  Ranger talents
+include wilderness survival, identifying flora and fauna, hunting
+and fishing, trapping and skinning, as well as archery and horseback
+riding.
+
+<p><li>THIEF.  Dodgy, nervous individuals who like to think of themselves
+as simply pursuing alternative strategies to making a living.
+
+<p>The prime desired stat of the thief is dexterity.  Thief talents
+include picking pockets, picking locks, detecting and disarming traps,
+moving around unseen and unheard, and surprising unwary creatures.
+
+<p><li>MAGE.  A student and scientist of magic who seeks naught but to
+unlock the unseen forces of the universe.
+
+<p>The prime desired stat of the mage is intelligence.  Mage talents
+include magic theory plus various spells.  The mage guild protects
+a rather broad, general-purpose assortment of spells, rather than
+any specialization.  The spell types include attack spells, defense
+spells, transmutation spells, and escape spells, with the occasional
+detection spell and such thrown in for good measure.
+
+<p><li>CLERIC.  One of those that believe themselves to be the truly devout.
+Each cleric worships a diety and belongs to a religious establishment
+of fellow worshippers.
+
+<p>The prime desired stat of the cleric is spirit.  Cleric talents
+include various prayers; exactly which ones depends on the diety,
+but the prayers often deal in protection, divination, and healing,
+as well as blessing and cursing items, people, and locations, and
+turning or commanding undead beings.
+
+<p><li>BARD.  The entertainer who considers themself an artist with a taste
+for adventure; everyone loves a bard, and bards love to party.
+
+<p>The prime desired stat of the bard is charisma.  The most notable
+bard talent is playing a musical instrument, but dancing and acting
+are also valuable skills, as are more academic studies like music
+theory.
+
+<p>Due to the magical nature of the world, experienced bards can impart
+spell-like mind-altering effects with their music, such as causing
+sensations of fellowship, enmity, fear, placidity, and drowsiness -
+but these enchanted tunes cannot affect those that cannot hear them.
+
+</ul>
+
+<h3>The Fifteen Extended Guilds</h3>
+
+<ul>
+<p><li>PALADIN.  A holy crusader type.
+
+<p>The prime desired stat of the paladin is spirit, the secondary
+desired stat strength.  Prerequisites for entrance to a paladin guild
+are an nth rank attainment as a cleric and an nth rank as a soldier.
+
+<p>Paladin talents include all cleric and soldier talents, as well as
+some powerful spiritual attack and defense forms at higher ranks.
+Notably they can learn versions of clerical healing prayers with no
+somatic components ('laying on hands'.)
+
+<p><li>DRUID.  The holly-harvesting robed lot.
+
+<p>The prime desired stat of the druid is spirit, the secondary
+desired stat constitution.  Prerequisites for entrance to a druidic
+circle are an nth rank attainment as a cleric and an nth rank as a
+ranger.
+
+<p>Druid talents include all cleric and ranger talents, as well as
+various druidic studies such as herbalism and geomancy.  Druidic
+prayers include communing with plants and animals, and extremely
+powerful druids can control the weather as an awesome attack magic.
+
+<p><li>MONK.  Cloistered clerics who devote their lives to upholding their
+faith and protecting their monestary.
+
+<p>The prime desired stat of the monk is spirit, the secondary
+desired stat dexterity.  Prerequisites for entrance to a monk guild
+are an nth rank attainment as a cleric and an nth rank as a thief.
+
+<p>Monk talents include all cleric and thief talents, as well as
+unarmed combat techniques, identification of flora and fauna,
+herbalism, and wine-making.
+
+<p><li>NECROMANCER.  The student of death, both how it can be caused and
+how it can be exploited by harnessing the darker forces of magic.
+
+<p>The prime desired stat of the necromancer is spirit, the secondary
+desired stat intelligence.  Prerequisites for entrance to a necromancer
+guild are an nth rank attainment as a cleric and an nth rank as a mage.
+
+<p>Necromancer talents include all cleric and mage talents, as well as
+the ability to animate corpses into undead beings such as zombies and
+skeletons.
+
+<p><li>PREACHER.  The expert in manufacturing consent.
+
+<p>The prime desired stat of the preacher is spirit, the secondary
+desired stat charisma.  Prerequisites for entrance to a preacher
+guild are an nth rank attainment as a cleric and an nth rank as a
+bard.
+
+<p>Preacher talents include all cleric and bard talents, as well as
+the ability to attract and keep extremely large numbers of followers,
+filling them with zealotry such that they will do almost anything
+the preacher asks.
+
+<p><li>ACROBAT.  One of few who perfect their agility to the point where they
+can make breathtaking physical manoeuvers.
+
+<p>The prime desired stat of the acrobat is dexterity, the secondary
+desired stat charisma.  Prerequisites for entrance to an acrobat guild
+are an nth rank attainment as a thief and an nth rank as a bard.
+
+<p>Acrobat talents include all thief and bard talents, as well as
+proficiencies at climbing, jumping, tumbling, and vaulting.
+
+<p><li>ASSASSIN.  The expert in the ways of causing death, it's that simple.
+
+<p>The prime desired stat of the assassin is dexterity, the secondary
+desired stat strength.  Prerequisites for entrance to an assassin guild
+are an nth rank attainment as a thief and an nth rank as a soldier.
+
+<p>Assassin talents include all thief and soldier talents, as well as
+proficiencies at dispatching creatures quietly when sleeping or
+unaware, including the identification, use, and eventually concoction
+of poisons (and their application on weapons.)
+
+<p><li>NINJA.  Experts in moving about unnoticed and often employed as spies,
+the ninja use subtle magicks to aid in their stealthy assaults.
+
+<p>The prime desired stat of the ninja is dexterity, the secondary
+desired stat intelligence.  Prerequisites for entrance to a ninja guild
+are an nth rank attainment as a thief and an nth rank as a mage.
+
+<p>Ninja talents include all thief and mage talents, as well as a
+smattering of other talents drawn from several other guilds, with
+an emphasis on stealth, escape, and diffusing of the situation always.
+
+</ul>
+
+<h3>Moral Orientations</h3>
+
+<ul>
+<p><li>KIND.  Creatures who help other creatures in distress.
+<p><li>PRAGMATIC.  Creatures who do only what needs to be done to survive.
+<p><li>CRUEL.  Creatures who take advantage of other creatures in distress.
+</ul>
+
+<h3>Ethical Orientations</h3>
+
+<ul>
+<p><li>LOYAL.  Creatures who obey authority regardless of their own interests.
+<p><li>DETACHED.  Creatures who obey authority when it matches their own interests.
+<p><li>OPPORTUNISTIC.  Creatures who rarely heed the demands of authority.
+</ul>
+
+<h3>Dieties and Karma</h3>
+
+<ul>
+<p><li> Nod-Noll (Kind, Loyal.)
+<p><li> Gaea (Pragmatic, Loyal.)
+<p><li> Hosta (Cruel, Loyal.)
+<p><li> Creses (Kind, Detached.)
+<p><li> Atom (Pragmatic, Detached.)
+<p><li> (Cruel, Detached.)
+<p><li> (Kind, Opportunistic.)
+<p><li> Horned (Pragmatic, Opportunistic.)
+<p><li> (Cruel, Opportunistic.)
+</ul>
+
+<p><hr>
+
+<h3>To-do List</h3>
+
+<ul>
+<li>Heatherwood Abbey
+<li>Roads, Rivers
+<li>Cynhyrdunum: Mill
+<li>Barren Expanse: Abandoned Mines
+<li>Bakersport: Stables, Palace, Tavern, Carpenter, Tailor, etc.
+<li>Badlands
+<li>Desert
+<li>Saiphan
+<li>Pyramids
+<li>etc...
+</ul>
+
+<h3>History</h3>
+
+<p>v2000.10.05 - v2000.10.25
+
+<ul>
+<li> See history.txt for CARPE DIEM
+</ul>
+
+<p>v2000.10.27
+
+<ul>
+<li> added Grumchik Strongholds.
+</ul>
+
+<p>v2000.10.30
+
+<ul>
+<li> added Grumchiks, many object factories/transformers.
+<li> added 'blur self' talent, 'create' and 'summon' talent factories.
+<li> any spell on any item (scroll of empathy etc.)
+<li> armour of statistic plus bonus (gloves of strength +1 etc.)
+<li> souls on items (card capture, animate corpse, and so forth.)
+<li> card capture spell.
+</ul>
+
+<p>v2000.11.02
+
+<ul>
+<li> Items which alter talents when wielded ($item->oftalent.)
+<li> Items which alter resistances when wielded ($item->oftalent.)
+<li> gigantic growth spell.
+<li> resist cold spell (todo: resist x spell constructor)
+<li> polymorph spell (todo: polymorph into x spell constructor)
+<li> pull crude clubs & staves from trees, switch on Bakersport gate
+<li> different kinds of poisons (todo: poisoned item constructor.)
+</ul>
+
+<p>v2000.11.03
+
+<ul>
+<li> different kinds of diseases
+</ul>
+
+<p>v2000.11.05
+
+<ul>
+<li> bard spells (songof constructor.)  Require instrument.
+<li> shuffled around and finalized the lowercase keymap.
+</ul>
+
+<p>v2000.11.06
+
+<ul>
+<li> hot peppers.
+<li> $item->make($adj) constructor.
+<li> many new types of clothing/armour.
+<li> rudimentary openable/closeable doors.
+<li> polymorph into x and resist x spell constructors.
+<li> magic circles.
+<li> creatures camoflaged as innocent-looking items.
+<li> create clouds of x spell constructor (fog cloud, stinking cloud, etc.)
+<li> expanded world map.
+</ul>
+
+<p>v2000.11.10
+
+<ul>
+<li> character backgrounds
+<li> giant beehives and giant honeybees are somewhat more realistic
+<li> desert-oriented terrain squares
+</ul>
+
+<p>v2000.11.18
+
+<ul>
+<li> more terrain, more items in database, not in world yet
+<li> more spell constructors - touch of x, bolt of x, sphere of x
+<li> exploding projectile spell, wizard window spell
+<li> pixie pyrotechnics spell
+<li> detect x (e.g. magic) (terrain squares/items) spell constructor
+</ul>
+
+<p>v2000.12.04
+
+<ul>
+<li> poisoned/diseased terrain square constructor
+</ul>
+
+</body>
+</html>

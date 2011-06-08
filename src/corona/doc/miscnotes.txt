@@ -1,0 +1,242 @@
+Notes -- notes -- notes
+-----------------------
+
+Albion = England
+
+kachina = native american mythical being
+
+hay = dried grass, straw = dried grain
+
+The guilds system works on a prerequisite DAG like the technologies
+system in a certain civilization simulation game.
+
+Adventurer: no prerequisites
+Fighter:    Adventurer, STR
+Thief:      Adventurer, DEX
+Ranger:     Adventurer, CON
+Mage:       Adventurer, INT
+Cleric:     Adventurer, SPI
+Bard:       Adventurer, CHA
+Assassin:   Fighter, Thief, STR DEX
+Cavalier:   Fighter, Ranger, STR CON
+Samurai:    Fighter, Mage, STR INT
+Paladin:    Fighter, Cleric, STR SPI
+Gladiator:  Fighter, Bard, STR CHA
+Nomad:      Thief, Ranger, DEX CON   bandit?  highwayman?
+Ninja:      Thief, Mage, DEX INT
+Monk:       Thief, Cleric, DEX SPI
+Acrobat:    Thief, Bard, DEX CHA
+Sorcerer:   Ranger, Mage, CON INT
+Druid:      Ranger, Cleric, CON SPI
+Troubador:  Ranger, Bard, CON CHA
+Alchemist:  Mage, Cleric, INT SPI
+Illusionist:Mage, Bard, INT CHA
+Missionary: Cleric, Bard, SPI CHA
+
+There may in fact be further guilds with miscellaneous prerequisites,
+but they are generally intended for (although not limited to) NPC's:
+
+Smith: (repair metal, improve metal, identify metal) STR
+Carver: (repair wood, improve wood, identify wood) DEX
+Farmer: (plant food, harvest food, identify food) CON
+Scribe: (comprehend/write/copy spells/prayers/music) SPI
+Sage: (create potion/salve, identify magic/artefact, lore) INT
+Merchant: (haggle, identify object, appraise gem) CHA
+
+Vague Plan for Guilds Prerequisite Codes:
+
+A14: Adventurer, Levels 1 to 4
+M14?A4: Mage, Levels 1 to 4 (You must be a level 4 Adventurer to train)
+m14?C8B8: Missionary, Levels 1 to 4 (You must be
+          a level 8 Cleric AND a level 8 Bard to train)
+
+
+Proposed Adventurer (general) Talents
+-------------------------------------
+
+bash down doors (3)
+detect concealed traps/doors (6)
+bladed weapon proficiency (9)
+pointed weapon proficiency (9)
+blunt weapon proficiency (9)
+
+
+Proposed Thief Talents (guild level, prerequisites)
+----------------------
+
+hide in shadows (1)
+pick pockets (1)
+climb walls (2)
+stealth (2)
+bladed weapon proficiency (2)
+detect concealed traps/doors (3)
+surprise (4, hide in shadows)
+pick locks (4)
+stab in back (5, surprise)
+disarm trap (5, detect traps, pick locks)
+
+
+Proposed Smith Talents
+----------------------
+
+identify metal (1)
+repair metal (2, identify metal)
+improve metal (4, repair metal)
+identify weapon (5, identify metal)
+identify armour (5, identify metal)
+
+
+Proposed Alchemist Talents
+--------------------------
+
+identify material (1)
+create salve (3)
+create potion (4)
+enchant item (5)
+
+Proposed Ranger Talents
+-----------------------
+
+hunting and fishing (1)
+* identify food (1)
+pointed weapon proficiency (2)
+trapping (remove pelt) (2)
+preserve food (3, identify food)
+repair wood (4)
+improve wood (5)
+
+Proposed Clerical Prayers
+-------------------------
+
+* minor heal (1)
+bless (1)
+speak in tongues (1)
+detect magic (1)
+cause poison (2)     (in person or in item like food)
+cure poison (2)
+turn undead (2)
+blunt weapon proficiency (3)
+cause disease (3)
+cure disease (3)
+* major heal (3)
+cause deafness (4)
+cure deafness (4)
+strike dumb (4)
+cure dumbness (4)
+* cause blindness (5)
+* cure blindness (5)
+animate undead (6)
+restore (7)
+raise (8)
+command undead (9)
+ressurect (10)
+
+Proposed Mage Spells
+--------------------
+
+summon familiar (1)
+sleep (1)
+exploding projectile (1)
+icy touch (1)
+shocking stare (1)
+charm (2)
+detect magic (2)
+partial invisibility (3)
+cone of silence (3)
+fireball (4)
+cylinder of cold (5)
+chain lightning (6)
+full invisibility (7)
+deflect magic (8)
+dispel magic (10)
+absorb magic (12)
+reflect magic (14)
+
+Proposed Druid Talents
+----------------------
+
+pass through wood (1)
+pixie pyrotechnics (1)
+charm plant (2)
+stoneskin (3)
+* lightning bolt (4)
+animate plant (4)
+animate stone (5)
+call lightning (6)
+
+Proposed Monk Talents
+---------------------
+
+copy scroll (1)
+chant (1)
+unarmed combat (1)
+climb walls (2)
+* minor heal (3)
+throw opponent (4)
+disarm opponent (5)
+nerve pinch (6)
+silent blow (7)
+silent death blow (13)
+
+
+Proposed Ninja Talents
+----------------------
+
+bladed weapon proficiency (1)
+hide in shadows (1)
+stealth (1)
+surprise (1)
+partial invisibility (2)
+stab in back (5)
+cone of silence (6)
+sleep (7)
+full invisibility (8)
+charm (9)
+
+Proposed Assassin Talents
+-------------------------
+
+bladed weapon proficiency (1)
+pointed weapon proficiency (1)
+identify poison (1)
+stealth (1)
+hide in shadows (2)
+surprise (2)
+poison blade or tip (3)
+stab in back (3)
+critical head shot (6)
+
+
+Proposed Fighter Talents
+------------------------
+
+bladed weapon proficiency (1)
+blunt weapon proficiency (1)
+pointed weapon proficiency (1)
+bash down doors (1)
+thrust (2)
+parry (3)
+sweep (4)
+battle heart (5)
+disarm opponent (8)
+throw opponent (10)
+
+
+Proposed Necromancer Spells
+---------------------------
+
+animate dead (1)
+command undead (1)
+protection from undead (1)
+summon spirit (2)
+command spirit (2)
+protection from spirits (2)
+whirlwind of bones (3)
+summon ghoul (4)
+command ghoul (4)
+* skulls of insanity (5)
+summon wraith (5)
+command wraith (5)
+spectral maelstrom (6)
+protection from demons (7)
+summon demon (10)

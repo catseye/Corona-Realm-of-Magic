@@ -1,0 +1,143 @@
+<html>
+<head>
+<title>CARPE DIEM v2000.12.04 Game Engine Documentation</title>
+<body bgcolor=#e0d0ff text=#000000>
+
+<h1>Game Engine Documentation</h1>
+<h3>CARPE DIEM v2000.12.04</h3>
+<p>Computer-Assisted Role Playing Engine for
+Diverse Interactive Entertainment Modules
+<hr>
+<p>(c)2000 Cat's Eye Technologies.  All rights reserved.
+<br>This software is OSI Certified Open Source Software.
+<br>See the file <a href="license.txt">license.txt</a> for license information.
+<p>
+
+<h2>Table of Contents</h2>
+
+<ul>
+<li>About CARPE DIEM
+<li><a href="development.html">Development Notes</a>
+<li><a href="object_model.html">Object Model Reference</a>
+</ul>
+
+<h3>About CARPE DIEM</h3>
+
+<p>CARPE DIEM is an engine and framework for games.
+
+<p>CARPE DIEM can be loosely described as a 'roguelike' game engine.
+It is primarily keypress-controlled, but a menu-driven interface
+is also employed, and players more comfortable with menus can use
+them exclusively.
+
+<p>In this context, roguelike primarily means: the area surrounding the
+currently active characters is displayed as a two-dimensional
+iconic map on the computer or terminal's screen.  This map may be
+larger than the current screen (it will scroll as needed.)
+
+<p>First-person perspective is not supported.
+
+<p>You, as the player, can command an entire party of adventurers, both
+those totally under your control (PC's) and those you have hired
+(NPC's.)
+
+<p>Eventually management of multiple parties will be possible, so that
+a party of more than one character can split into two parties, and
+two parties can join to form a bigger party.  Play may switch between
+parties at any point.
+
+<p>Only turn-based gameplay is supported, not real-time.
+
+<p>The combat and talent systems need work, but show promise.
+
+
+<h3>The Implementation</h3>
+
+<p>CARPE DIEM is written entirely in Perl 5.x.  It uses few external
+modules so there should be little need to worry about obtaining
+the "right extras"; as long as you have a stable, basic configuration
+of Perl installed, it should run.
+
+<p>CARPE DIEM uses a display abstraction layer, so as long as you can
+describe exactly how to render any given object (say, a dragon,)
+you can, with enough work, make it display on any display device
+you could possibly access via Perl.
+
+<p>By default, however, only generic, console-or-terminal based
+display drivers are selected.  Drivers are included for console
+input and output under 32-bit Windows, terminal input under POSIX,
+and terminal output under ANSI (or VT100); the output functionality
+includes colour modules which support sixteen colours under 32-bit
+Windows and ANSI, and a crude approximation on VT100 terminals
+which only support an intensity bit.
+
+<p>Curses is only used if it has already been installed as a
+library for the Perl interpreter, so display refreshing is not
+guaranteed to be particularly optimized, and it is recommended
+CARPE DIEM be run from a console if Curses is not available.
+
+<p>In order to coexist with ANSI keypress sequences which begin
+with an escape character, the escape key must be 'double-clicked'
+in order for it to register as 'escape'.
+
+<p>This display/input abstraction layer has been tested on:
+
+<ul>
+<li>  Windows 95: console
+<li>  Windows 98 SE: console
+<li>  Windows NT: console
+<li>  FreeBSD 4.0-RELEASE: console (ANSI and Curses)
+<li>  Linux 2.2.17: console, xterm (X), gsh-term (KDE)
+<li>  SCO v3.x(?): console
+<li>  Solaris SunOS 4: telnet
+</ul>
+
+<p>The _screen module will select what kind of character set to assume
+based on the current operating system - it assumes Windows, Linux,
+and FreeBSD are running on hardware with the IBM PC OEM textmode
+font.  When the Mac version is done, it may use the Mac's built-in
+symbolset (if not a set of dedicated graphical icons).  If a dedicated
+font is one day created, that may be invoked/configured here as well.
+In all other cases, generic ASCII symbols are used to represent things.
+Because there are more things than symbols, some things look the same
+in ASCII, and the What Is...? command can be used to identify things
+on the screen.
+
+<p>The mappings which translate keypresses into actions are configurable.
+The key/ directory contains keymaps for the game Corona, and ones
+resembling Hack, Rogue, Larn, ADOM, and Angband (Roguelike), and of
+course it offers the possibility of rolling your own custom keymapping.
+
+<h3>Thanks</h3>
+
+<p>Thanks go to:
+
+<ul>
+  Russell Bornschlegel, John Colagioia, Brian Connors,
+  Matthias Giwer, Ben Olmstead, Steve Mosher, Rafal Sulejman,
+  Greg Velichansky, and anyone else who chipped in their
+  two cents whose name I've managed to forget...
+<ul>
+    for their ideas, insights, criticisms, witticisms,
+    and especially for their seemingly endless testing
+</ul></ul>
+
+<ul>
+  Larry Wall
+<ul>
+   for making a gigantic hack that works
+   in mostly the same way everywhere
+</ul></ul>
+
+<ul>
+  The Authors of Rogue, [Net]Hack, Moria, Angband, Alphaman, & ADOM
+<ul>
+  for letting me stand on the shoulders of giants
+</ul></ul>
+
+<p>&nbsp;<p>Chris Pressey
+<br>Winnipeg, Manitoba, Canada
+<br>Dec 4 2000
+<p>
+</body>
+</html>

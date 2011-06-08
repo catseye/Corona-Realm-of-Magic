@@ -1,0 +1,688 @@
+<html>
+<head>
+<title>CARPE DIEM v2000.11.10 Object Model Reference</title>
+<body bgcolor=#e0d0ff text-#000000>
+
+<h1>Object Model Reference</h1>
+<h3>CARPE DIEM v2000.11.10</h3>
+<hr>
+<h2>Introduction</h2>
+
+<p>This document aims to be a brief but comprehensive overview
+and help guide to the object networks used in
+the <a href="http://www.catseye.mb.ca/games/carpe/">CARPE DIEM</a> roguelike game engine.
+
+<p>It is certainly incomplete and inaccurate in places,
+but is better than no documentation at all (knock on wood.)
+All information contained herein is subject to change, in
+terms of interface, naming, and implementation.  Interfaces
+marked with <b>(???)</b> are extremely likely to change.
+
+<h2>Object Framework</h2>
+
+<p>Members on objects are of two basic types: <i>methods</i>,
+which are Perl functions, and <i>attributes</i>, which are
+mutable data members.
+
+<p>Kinds of methods include: <i>derivations</i> which return
+a value only; <i>mutations</i> which change the state of the
+object (and which may or may not return a value); and
+<i>constructors</i>, which return a new object while not
+changing the state of the old object (if any.)  Constructors
+which create a new object based on an old object are sometimes
+called <i>factories</i>.
+
+<p>Kinds of attributes include <i>event handlers</i>, which
+are like methods in that they are executable.  Names of
+event handlers always begin with <tt>on_</tt>, and their data
+type is always a string (which is usually simply <tt>eval</tt>uated
+by Perl's built-in mechanism.)
+
+<h2>Part I. Utility Classes</h2>
+
+<ul>
+<li><b>Dice</b> - objects which can be rolled to yield a random integer
+<li><b>Distribution</b> - objects which can be picked to yield a random object
+<li><b>Fuses</b> - objects which maintain sequences of arbitrary future events
+</ul>
+
+<h3>Dice</h3>
+
+<ul>
+
+<p><u>Constructors</u><p>
+
+<li>Dice->new(<i>$count</i>, <i>$faces</i>, [<i>$bonus</i>])
+<br>Creates and returns a new Dice object with the given attributes.<p>
+
+<li><i>$dice</i>->improve(<i>+$integer</i>) <b>(??? adjust_plus)</b>
+<br>Returns a new Dice object with an altered 'plus' bonus modifier.
+This does not affect the given <i>$dice</i> object.<p>
+
+<li><i>$dice</i>->improve_faces(<i>$factor</i>) <b>(??? scale_faces)</b>
+<br>Returns a new Dice object with its faces altered by a factor.
+This does not affect the given <i>$dice</i> object.<p>
+
+<p><u>Derivations</u><p>
+
+<li><i>$dice</i>->roll
+<br>Returns a random integer, the range and frequency distribution
+of which is determined by the number of dice, the number of faces
+on each die, and a 'plus' bonus modifier.<p>
+
+<p><u>Attributes</u><p>
+
+<li><i>$dice</i>->{count}
+<br>The number of dice the object represents.<p>
+<li><i>$dice</i>->{faces}
+<br>The number of faces represented on each die.<p>
+<li><i>$dice</i>->{plus}
+<br>The bonus modifier added to the basic dice roll.<p>
+</ul>
+
+<h3>Distribution</h3>
+
+<ul>
+
+<p><u>Constructors</u><p>
+
+<li>Distribution->new(<i>$probability</i> => <i>$object</i>, ...)
+<br>Creates and returns a new Distribution object with the given
+probability-to-object associations.<p>
+
+<p><u>Derivations</u><p>
+
+<li><i>$distribution</i>->pick
+<br>Returns a random object, the frequency distribution
+of which is determined by the Distribution object's probability
+percentages.<p>
+
+<p><u>Mutations</u><p>
+
+<li><i>$distribution</i>->scale(<i>$factor</i>) <b>(??? scale_probabilities)</b>
+<br>Alters all of the Distribution object's probability
+percentages by <i>$factor</i>, a rational number.
+</ul>
+
+<h3>Fuses</h3>
+
+<ul>
+
+<p><u>Constructors</u><p>
+
+<li>Fuses->new()
+<br>Creates and returns a new, empty Fuses object.  Generally
+speaking, only one Fuses object is required for the entire engine.<p>
+
+<p><u>Derivations</u><p>
+
+<li>Fuses->current()
+<br>Returns a reference to a hashtable which describes the
+currently expiring fuse; used in scripts set up in fuses to
+modify the fuse for the next pass.<p>
+
+<p><u>Mutations</u><p>
+
+<li><i>$fuses</i>->tick
+<br>Causes all expired fuses to fire, and all non-expired fuses to
+come one time unit closer to firing.<p>
+<li><i>$fuses</i>->add(<i>$script</i>, <i>$fuse_duration</i>, <i>\@argument</i>) <b>(??? name)</b>
+<br>Adds a new fuse to the Fuses object.<p>
+</ul>
+
+<h2>Part II. Multiple Superclasses</h2>
+
+<ul>
+<li><b>Physical</b> - objects with a physical presence
+<li><b>Cloneable</b> - objects which can be copied and bred
+<li><b>Saveable</b> - objects which can be loaded and saved
+</ul>
+
+<p><u>Constructors</u><p>These object classes do not have constructors.
+
+<h3>Physical</h3>
+
+<ul>
+<p><u>Derivations</u><p>
+
+<li><i>$physical</i>->accusative
+<br>Returns the appropriate accusative pronoun (him, her, it.)
+Occurances of <tt>&lt;him&gt;</tt> in format strings is replaced
+by this.<p>
+<li><i>$physical</i>->possessive
+<br>Returns the appropriate possessive pronoun (his, her, its.)
+Occurances of <tt>&lt;his&gt;</tt> in format strings is replaced
+by this.<p>
+<li><i>$physical</i>->plural <b>(???)</b>
+<br>Returns the plural form of the name of the Physical object in question.<p>
+
+<li><i>$physical</i>->dist(<i>$physical</i>)
+<br>Returns the distance between the two Physical objects in question.<p>
+
+<li><i>$physical</i>->in_bounds([<i>$x</i>, <i>$y</i>])
+<br>Returns a boolean value indicating whether this Physical object (or the
+given (<i>x</i>,<i>y</i>) coordinates, if any,) is within
+the bounds of it's Region object indicated in {location}.<p>
+
+<li><i>$physical</i>->screenx() | ->screeny()
+<br>Returns the <i>x</i>- (or <i>y</i>-) position on the screen where
+this Physical object would be displayed.<p>
+
+<p><u>Mutations</u><p>
+
+<li><i>$physical</i>->display()
+<br>Redraws the Physical object on the screen
+if it happens to be in the line of sight of the leader.<p>
+
+<li><i>$physical</i>->undisplay()
+<br>Erases the Physical object from the screen.<p>
+
+<li><i>$physical</i>->seen(<i>$physical</i>, "message")
+<br>Broadcasts an action taken by the Physical object to every
+   receiving Physical object within line of sight and range.<p>
+
+<li><i>$physical</i>->hurt(<i>$force</i>, <i>$perpetrator</i>, <i>$body_part</i>)
+<br>Causes the Physical object to take damage.  The amount of damage is
+indicated by $force, and the Actor which is causing the damage receives
+experience points, if any, should the Physical object be destroyed.<p>
+
+<li><i>$physical</i>->heal(<i>$force</i>, <i>$perpetrator</i>, <i>$body_part</i>)
+<br>Opposite of hurt.  Not really implemented.<p>
+
+<p><u>Attributes</u><p>
+
+<li><i>$physical</i>->{name}
+<br>String containing the conversational name of the object.<p>
+
+<li><i>$physical</i>->{identity}
+<br>String containing the secret identity of the object.<p>
+
+<li><i>$physical</i>->{sex}
+<br>String containing the sex of the object; must currently be
+only one of: 'Male', 'Female', or 'Neuter'.<p>
+
+<li><i>$physical</i>->{proper}
+<br>Boolean indicating whether the object has a proper name.<p>
+
+<li><i>$physical</i>->{damage}
+<br>A Force object which indicates the potential damage caused
+to an opponent when this Physical object is used as a melee weapon.<p>
+
+<li><i>$physical</i>->{projectile}
+<br>A Force object which indicates the potential damage caused
+to an opponent when this Physical object is used as a thrown (not launched) weapon.
+(Launching weapons use a version of this Force modified via $force->{dice}->improve_faces().)<p>
+
+<li><i>$item</i>->{hitbonus} <b>(??? accuracy, Dice)</b>
+<br>An integer which indicates the accuracy bonus gained by this Physical object
+(be it an Item or an Actor) in combat (be it melee or missile.)<p>
+
+<li><i>$physical</i>->{displayed} <b>(??? _displayed)</b>
+<br>A boolean indicating whether this Physical object is already displayed
+on the screen, altered by the <tt>display</tt> and <tt>undisplay</tt> methods.<p>
+
+<li><i>$physical</i>->{lightsource} <b>(??? light_range, light_duration)</b>
+<br>A boolean indicating whether this Physical object acts as a source of light.<p>
+
+<li><i>$physical</i>->{count}
+<br>An integer which indicates how many instances of the same Physical object represents.
+For example, a single Physical object can represent a group of a dozen
+arrows, as long as the arrows do not differ from each other in any way.<p>
+
+<li><i>$physical</i>->{magic} <b>(??? A:is_magical)</b>
+<br>A boolean which indicates whether this Physical object is magical.<p>
+
+<li><i>$physical</i>->{curse} <b>(??? A:is_cursed, on_remove)</b>
+<br>A boolean which indicates whether this Physical object is cursed.<p>
+
+<li><i>$physical</i>->{lore} <b>(???)</b>
+<br>A string which contains some background information about the Physical object.<p>
+
+<li><i>$physical</i>->{weight}
+<br>An integer which indicates how heavy this Physical object is (assuming {count}
+is 1; to get the weight of the entire group multiply {count} by {weight}.)<p>
+
+<li><i>$physical</i>->{aeroweight} <b>(??? drag_coefficient)</b>
+<br>An integer which indicates the effective weight of this Physical object
+when it is thrown (tweaked due to aerodynamics, throwing motion, etc.)<p>
+
+<li><i>$physical</i>->{indestructible} <b>(??? on_destroy)</b>
+<br>A boolean indicating that the Physical object cannot be destroyed,
+typically found on edge walls in dungeons.<p>
+
+<li><i>$physical</i>->{durability} <b>(??? {max}{constitution})</b>
+<br>A boolean indicating how much damage the Physical object can at most sustain before
+it is destroyed.<p>
+
+<li><i>$physical</i>->{condition} <b>(??? {op}{constitution})</b>
+<br>A boolean indicating how much damage the Physical object can currently sustain before
+it is destroyed.<p>
+
+<li><i>$physical</i>->{resists}
+<br>A Resistances object, which describes which forces this Physical object is
+resistant or subsceptible to.<p>
+
+<li><i>$physical</i>->{location}
+<br>The Region object where this Physical object is located, if 'on the ground'
+and not being carried by an Actor.<p>
+
+<li><i>$physical</i>->{x} | ->{y}
+<br>The <i>x</i> (or <i>y</i>) coordinate of the Physical object, relative to
+the map in the object's {location} Region object.<p>
+
+<li><i>$physical</i>->{appearance}
+<br>A string which exists as a key in the global appearance table <tt>%::sc</tt>.
+Usually a fairly generic name like 'dragon' or 'fruit' will be found here.<p>
+
+<li><i>$physical</i>->{color} <b>(??? background, transparent)</b>
+<br>A string which exists as a key in the global color table.<p>
+
+
+</ul>
+
+<h2>Physical Classes</h2>
+
+<p>All of these classes are subclasses of Physical (among other things.)
+As such, they inherit the methods and attributes of Physical objects as
+described above.
+
+<ul>
+<li><b>Actor</b> - objects with agency
+<li><b>Item</b> - objects which can be carried
+<li><b>Terrain</b> - objects which be travelled on/around
+</ul>
+
+<h3>Actor</h3>
+
+<ul>
+
+<p><u>Constructors</u><p>
+
+<li>undocumented
+
+<p><u>Derivations</u><p>
+
+<li><i>$actor</i>->has(<i>$object</i>)
+<br>Determines whether the Actor object possesses a certain
+object (an Item or a Talent.)  Returns said object if it is
+possessed, or <tt>undef</tt> if not.  Talents are compared by
+name.  Items are compared by full identity.  If the Item argument
+has a {count}, then the Item in the Actor's inventory must be
+at least that {count}.<p>
+
+<p><u>Attributes</u><p>
+
+<li><i>$actor</i>->{hair_type} | ->{eye_type} | ->{skin_type}
+<br>Strings containing the short descriptions of the physical attributes of this Actor.<p>
+
+<li><i>$actor</i>->{hair_color} | ->{eye_color} | ->{skin_color}
+<br>Strings containing the color descriptions of the physical attributes of this Actor.
+These can map to screen colors for player characters.<p>
+
+<li><i>$actor</i>->{race}
+<br>String containing the name of the race of beings to which this Actor belongs.
+Not implemented particularly strongly.<p>
+
+<li><i>$actor</i>->{carcass} <b>(??? on_death)</b>
+<br>Boolean indicating whether this Actor leaves a carcass after it's death.<p>
+
+<pre>
+  'lit'            => 0,  # value *derived* from holding light source
+  'incapacitated'  => 0,  # value *derived* from operating stats
+</pre>
+
+<li><i>$actor</i>->{<i>effect</i>} <b>(???)</b>
+<br>Integer indicating how many turns of <i>effect</i> are left to apply to this Actor.
+<i>Effect</i> may be one of:
+
+  'blind',
+  'deaf',
+  'dumb',
+  'confused',
+  'paralyzed',
+  'placid', and
+  'blurry'.<p>
+
+<li><i>$actor</i>->{<i>bodypart</i>}
+<br>Item which is currently being wielded on the given body part.
+<i>Bodypart</i> may be one of:
+
+  'head',
+  'neck',
+  'shoulders',
+  'arms',
+  'rwrist',
+  'lwrist',
+  'hands',
+  'rfinger',
+  'lfinger',
+  'rhand',
+  'lhand',
+  'torso',
+  'waist',
+  'legs',
+  'rankle',
+  'lankle', and
+  'feet'.<p>
+
+<li><i>$actor</i>->{totalhits}
+<br>Integer measurement of the total number of damaging hits this Actor has taken,
+for statistical purposes.<p>
+
+<li><i>$actor</i>->{blockedhits}
+<br>Integer measurement of the total number of hits this Actor has sucessfully blocked,
+for statistical purposes.<p>
+
+<li><i>$actor</i>->{totalswings}
+<br>Integer measurement of the total number of attacks (hit or miss) this Actor has made,
+for statistical purposes.<p>
+
+<li><i>$actor</i>->{damagingswings}
+<br>Integer measurement of the total number of damaging attacks Actor has sucessfully made,
+for statistical purposes.<p>
+
+<li><i>$actor</i>->{party}
+<br>Party object to which the Actor belongs.<p>
+
+<li><i>$actor</i>->{encounter}
+<br>Encounter object which is started when another Actor interacts with this Actor.<p>
+
+<li><i>$actor</i>->{target}
+<br>Actor object which is this current target of this Actor.<p>
+
+<pre>
+  'combat'         => 'Attack',  # some creatures will Flee or Bargain instead
+  'noncombat'      => 'Wander',
+  'body_aim'       => 'dumb_biped',
+  'experience'     => 0,
+  'belongings'     => [],
+  'talents'        => [],
+  'domhand'        => 'rhand',
+  'on_move'        => '',
+</pre>
+
+<li><i>$actor</i>->{max}{<i>stat</i>}
+<br>Integer maximum stat for this Actor.
+<i>Stat</i> may be one of:
+  'strength',
+  'constitution',
+  'dexterity',
+  'intelligence',
+  'spirit', and
+  'charisma'.<p>
+
+<li><i>$actor</i>->{op}{<i>stat</i>}
+<br>Integer operating (current) stat for this Actor.
+<i>Stat</i> may be one of:
+  'strength',
+  'constitution',
+  'dexterity',
+  'intelligence',
+  'spirit', and
+  'charisma'.<p>
+
+<p><u>Mutations</u><p>
+
+<li><i>$actor</i>->heal_all()
+<br>Sets the operating stats of the Actor to the maximum stats of the Actor.<p>
+
+<li><i>$actor</i>->remove_talents()
+<br>Remove all Talents with a skill level of 0% or less from this Actor.<p>
+
+<li><i>$actor</i>->adjust(<i>$stat</i>, <i>$delta</i>)
+<br>Change an operating stat by a certain amount,
+possibly killing the Actor in the process.<p>
+
+<li>others undocumented
+
+
+<p><u>Attributes</u><p>
+
+<li>undocumented
+
+</ul>
+
+<h3>Item</h3>
+
+<ul>
+
+<p><u>Constructors</u><p>
+
+<li><i>$item</i>->bunch(<i>$integer</i>)
+<br>Returns a new Item object with its {count} set to a specific
+integer.  This does not affect the given <i>$item</i> object.<p>
+
+<p><u>Derivations</u><p>
+
+<li><i>$item</i>->combinable(<i>$item</i>)
+<br>Returns a boolean indicating whether the two Item objects
+are identical (and can be combined into a single Item by adding
+their counts together.)<p>
+
+<p><u>Mutations</u><p>
+
+<li><i>$item</i>->identify
+<br>Reveals the secret identity of this Item,
+setting the conversational name of it to the same.<p>
+
+<li><i>$item</i>->perceive_value(<i>$item</i>)
+<br>Causes this Item object to be perceived to be priced
+by a certain number of other Item objects, by it's owner.<p>
+
+<li><i>$item</i>->useup($consumer, [$delta]) <b>(???)</b>
+<br>Causes a certain number of this Item object to be used up
+in some way by an Actor object.  Dangerously ambiguous, needs
+clarification.<p>
+
+<li><i>$item</i>->usemissile($consumer???) <b>(???)</b>
+<br>Causes one of this Item object to be used up
+in a missile-weapons way by an Actor object.  Dangerously ambiguous, needs
+clarification.<p>
+
+<li><i>$item</i>->use($actor)
+<br>Causes this Item object to be used by it's owner.
+This will activate it's {talent}, or the {on_use} event
+if the talent is not provided.<p>
+
+<p><u>Attributes</u><p>
+
+<li><i>$item</i>->{worn_on}
+<br>A dictionary, mapping the body parts that this Item can be worn on
+as clothing or armor, to while body parts they cover when worn.
+Not fully implemented yet.<p>
+
+<li><i>$item</i>->{written} <b>(??? A:is_readable)</b>
+<br>A boolean indicating whether this Item can be read.<p>
+
+<li><i>$item</i>->{food} <b>(??? A:is_edible | is_consumable)</b>
+<br>A boolean indicating whether this Item can be eaten.<p>
+
+<li><i>$item</i>->{beverage} <b>(??? A:is_drinkable | is_consumable)</b>
+<br>A boolean indicating whether this Item can be drunk.<p>
+
+<li><i>$item</i>->{body} <b>(??? A:is_bodily)</b>
+<br>A boolean indicating whether this Item is part of its possessor's body.
+If this is the case, it will not be dropped after the Actor's death.<p>
+
+<li><i>$item</i>->{defense} <b>(??? worn_on -> covers -> composition)</b>
+<br>An integer which indicates the defense capability of this Item when worn.<p>
+
+<li><i>$item</i>->{charges} <b>(??? fuel)</b>
+<br>An integer which indicates how many charges this Item has left (wands
+and so forth.)<p>
+
+<li><i>$item</i>->{talent} <b>(??? consume_talent, on_use etc)</b>
+<br>A Talent object which indicates what thing this Item
+does when used or consumed (in the absence of any on_use or
+on_consume event).<p>
+
+<li><i>$item</i>->{value} <b>(??? _value)</b>
+<br>An Item object which indicates what the owner of this Item
+thinks it is worth.<p>
+
+<li><i>$item</i>->{soul}
+<br>An Actor object which represents the essence of a being
+encapsulated in this Item (figurines, pocket-monster cards,
+genies in lamps, etc.)<p>
+
+<p><u>Event Handlers</u><p>
+
+<li><i>$item</i>->{on_wear}
+<br>This event is triggered when an Actor puts on or takes off this Item.<p>
+
+<li><i>$item</i>->{on_consume}
+<br>This event is triggered when an Actor consumes (eats, drinks, applies) this Item.<p>
+
+<li><i>$item</i>->{on_use}
+<br>This event is triggered when an Actor uses this Item.<p>
+
+<li><i>$item</i>->{on_land}
+<br>This event is triggered after this Item is thrown or fired.<p>
+
+<li><i>$item</i>->{on_strike}
+<br>This event is triggered after this Item strikes someting in melee combat.<p>
+
+<li><i>$item</i>->{on_struck}
+<br>This event is triggered after this Item is struck by something.<p>
+
+</ul>
+
+<h3>Terrain</h3>
+
+<ul>
+<li>undocumented
+</ul>
+
+<h2>Non-Physical Classes</h2>
+
+<ul>
+<li><b>Talent</b> - skills or magic employed by objects
+<li><b>Region</b> - objects which maintain maps of objects
+<li><b>Encounter</b> - objects which describe meetings and surprises
+</ul>
+
+<h3>Talent</h3>
+
+<ul>
+<li><i>$talent</i>->{on_perform}
+<br>Script which is called when the Talent object is performed.<p>
+
+<li>others undocumented
+
+</ul>
+
+<h3>Region</h3>
+
+<ul>
+
+<p><u>Attributes</u><p>
+
+<li><i>$region</i>->{name}
+<br>String containing the name of the Region.<p>
+
+<li><i>$region</i>->{genpattern}
+<br>Establishes the logic used to fill out an unfilled Region
+object with random Terrain objects.  Allowable genpatterns are:
+<ul>
+<li><tt>random</tt> - noise
+<li><tt>accretion</tt> - natural terrain
+<li><tt>recursive</tt> - unnatural terrain
+<li><tt>canned</tt> - based on provided map
+<li><tt>dungeon</tt> - room-and-hallway excavation
+<li><tt>gradient</tt> - gradient between several different distributions
+</ul>
+
+<li><i>$region</i>->{generated}
+<br>A boolean indicating whether terrain for this Region has been generated yet.<p>
+
+<li><i>$region</i>->{sizex} | ->{sizey}
+<br>Integers indicating how many cells wide/tall this Region is.<p>
+
+<li><i>$region</i>->{offsetx} | ->{offsety}
+<br>Integers indicating the scrolled position of the map of this Region when displayed.<p>
+
+<li><i>$region</i>->{worldx} | ->{worldy}
+<br>Integer coordinates indicating this Region's position in the world map.<p>
+
+<pre>
+  'map'          => [],
+  'lit'          => [],
+  'actors'       => [],
+  '_collmap'     => [],
+  'outside'      => $::sc{dark},
+  'border'       => undef,
+  'ambient'      => undef,
+  'terraind'     => undef,
+  'terrgradn'    => undef,
+  'terrgrads'    => undef,
+  'terrgrade'    => undef,
+  'terrgradw'    => undef,
+  'monsterd'     => undef,
+  'itemd'        => undef,
+  'music'        => '',
+  'msg'          => '',
+  'template'     => '',
+  'legend'       => '',
+</pre>
+
+<li>others undocumented
+</ul>
+
+<h3>Encounter</h3>
+
+<ul>
+
+<p><u>Constructors</u><p>
+
+<li>Encounter->new()
+<br>Basic constructor.<p>
+
+<li>Encounter->auto(<i>$actor</i>)
+<br>Automatic constructor.<p>
+
+<p><u>Mutations</u><p>
+
+<li><i>$encounter</i>->begin()
+<br>Causes the Encounter to begin, displaying menus with which the user can interact
+with the Actor(s).<p>
+
+<li><i>$encounter</i>->attack()
+<br>Called by begin(), causes the Encounter to degrade into attack.<p>
+
+<p><u>Attributes</u><p>
+
+<li><i>$encounter</i>->{actors}
+<br>A reference to an array of Actor objects who are hosting this Encounter.
+When the Encounter is attached to an Actor in the first place, that Actor is
+automatically injected into this list.<p>
+
+<li><i>$encounter</i>->{message}
+<br>A string displayed upon initiation of the Encounter.<p>
+
+<li><i>$encounter</i>->{lore}
+<br>A string displayed upon friendly communications.<p>
+
+<li><i>$encounter</i>->{persistent}
+<br>A boolean indicating whether the Encounter is persistent.  If it is not persistent,
+it is removed after it is activated.<p>
+
+<li><i>$encounter</i>->{friendly}
+<br>A boolean indicating whether the Encounter is friendly.<p>
+
+<li><i>$encounter</i>->{itemseller} <b>(??? on Actor)</b>
+<br>A boolean indicating whether the host of the Encounter is willing to sell items.<p>
+
+<li><i>$encounter</i>->{itembuyer} <b>(??? on Actor)</b>
+<br>A boolean indicating whether the host of the Encounter is willing to buy items.<p>
+
+<li><i>$encounter</i>->{serviceseller} <b>(??? on Actor)</b>
+<br>A boolean indicating whether the host of the Encounter is willing to sell services (Talent
+applications).<p>
+
+<li><i>$encounter</i>->{servicebuyer} <b>(??? on Actor)</b>
+<br>A boolean indicating whether the host of the Encounter is willing to buy services.<p>
+
+</ul>
+
+</body>
+</html>
