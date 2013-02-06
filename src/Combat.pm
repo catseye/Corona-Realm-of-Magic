@@ -1,3 +1,7 @@
+# Copyright (c)2000-2013, Chris Pressey, Cat's Eye Technologies.
+# All rights reserved.
+# Distributed under a BSD-style license; see the file LICENSE for more info.
+
 sub attack
 {
   my $self = shift;
