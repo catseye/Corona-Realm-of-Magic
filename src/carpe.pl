@@ -172,7 +172,18 @@ restart_cfg:
   require "${universe}_${username}.prefs" if -r "${universe}_${username}.prefs";
 }
 
-use vC;
+# This allows us to keep Console::Virtual in a subrepo located in
+# the lib dir of this project
+BEGIN
+{
+  use File::Spec::Functions;
+  use File::Basename;
+  push @INC, catdir(dirname($0), '..', 'lib', 'console-virtual');
+}
+
+use Console::Virtual 2007.1122
+     qw(getkey display gotoxy clrscr clreol
+        normal inverse bold update_display color);
 
 use _utility;
 use _screen;

@@ -37,7 +37,6 @@ BEGIN
 {
   require "sym/$::pref{symbols}.pm";
   require "key/$::pref{keymap}.pm";
-  require "col/$::setup{color}.pm";
 }
 
 sub readstring
